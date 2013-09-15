@@ -16,9 +16,7 @@ import javax.swing.JTextArea;
 import com.bbss.constants.Constants;
 
 public class Author extends JFrame {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JLabel me;
 	private JButton view, exit;
