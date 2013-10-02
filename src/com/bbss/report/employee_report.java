@@ -145,8 +145,8 @@ public class employee_report extends JFrame  {
     	try {
                 
             ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("select empNo,Sname,Fname,Gender,Designation,Telephone,E_Mail from Emp");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select empNo,Sname,Fname,Gender,Designation,Telephone,E_Mail from Emp");
                 
 			
 				listPane.append("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");

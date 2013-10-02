@@ -116,21 +116,6 @@ public class Booking extends JFrame{
 		add(general);
 		setSize(550,420);
 		setResizable(false);
-		try
-
-         {
-	
-                Statement s = Connect.getConnection().createStatement();
-      }
-
-     
-      catch ( Exception excp )
-
-      {
-            excp.printStackTrace();
-
-      
-	 }
 	 passroute();
 	 //setCbx();
 	 generator();
@@ -287,8 +272,8 @@ public class Booking extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Bus_RegNo,Dept_Time From Schedules where Route_Name='" + combo7.getSelectedItem() + "'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Bus_RegNo,Dept_Time From Schedules where Route_Name='" + combo7.getSelectedItem() + "'");
 			
 			while (rst.next())
 			{
@@ -307,8 +292,8 @@ public class Booking extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Pass_No,Pass_Name FROM Passenger where Booked_Status='Not_Booked'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Pass_No,Pass_Name FROM Passenger where Booked_Status='Not_Booked'");
 			
 			while(rst.next())
 			{
@@ -327,8 +312,8 @@ public class Booking extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Fare_Charged FROM Route where RouteName='" + combo7.getSelectedItem() + "'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Fare_Charged FROM Route where RouteName='" + combo7.getSelectedItem() + "'");
 			
 			while(rst.next())
 			{
@@ -347,8 +332,8 @@ public class Booking extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Route_Name FROM Schedules");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Route_Name FROM Schedules");
 			
 			while(rst.next())
 			{
@@ -367,8 +352,8 @@ public class Booking extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Depot,Destination FROM Route");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Depot,Destination FROM Route");
 			
 			while(rst.next())
 			{
@@ -536,8 +521,8 @@ public class Booking extends JFrame{
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Booking_No FROM BOOKING");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Booking_No FROM BOOKING");
 			//if (rst.getInt(1)==null)
 				text1.setText("1000");
 	

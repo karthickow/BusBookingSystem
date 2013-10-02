@@ -229,9 +229,9 @@ Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
 	{
 		try
 		{
-		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Bus_RegNo,BusNo FROM Buses order by BusNo");
+		ResultSet rst=Connect.getConnection().createStatement().executeQuery("SELECT Bus_RegNo,BusNo FROM Buses order by BusNo");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Bus_RegNo,BusNo FROM Buses order by BusNo");*/
 			
 			while(rst.next())
 			{
@@ -250,8 +250,8 @@ Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Route_No,RouteName FROM Route ");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Route_No,RouteName FROM Route ");
 			
 			while(rst.next())
 			
@@ -274,8 +274,8 @@ Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Emp.empNo, Emp.Sname, Emp.Fname, Emp.Lname, Emp.Designation FROM Emp WHERE Emp.Designation='Driver'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Emp.empNo, Emp.Sname, Emp.Fname, Emp.Lname, Emp.Designation FROM Emp WHERE Emp.Designation='Driver'");
 			while(rst.next())
 			{
 				cboDriverNo.addItem(rst.getString(1));

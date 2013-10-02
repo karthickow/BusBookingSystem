@@ -137,8 +137,8 @@ public class Scheduling_report extends JFrame  {
     	try {
                 
             ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("select Bus_No,Route_No,empNo,Trip_No,Date_Scheduled from Schedules");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select Bus_No,Route_No,empNo,Trip_No,Date_Scheduled from Schedules");
                 
 			
 				listPane.append("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");

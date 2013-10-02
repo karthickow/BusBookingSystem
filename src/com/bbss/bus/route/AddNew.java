@@ -301,8 +301,8 @@ import com.bbss.login.LoginScreen;
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Route_No FROM Route");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Route_No FROM Route");
 			while(rst.next())
 			{
 				String s;

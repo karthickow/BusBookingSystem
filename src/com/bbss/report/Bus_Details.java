@@ -156,8 +156,8 @@ public class Bus_Details extends JFrame  {
     	try {
                 
             ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("select Bus_RegNo,Model,Capacity,insurance_Status,Insurance_Expiry from Buses");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select Bus_RegNo,Model,Capacity,insurance_Status,Insurance_Expiry from Buses");
                 
 			
 				listPane.append("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");

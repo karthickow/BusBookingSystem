@@ -239,8 +239,8 @@ public class Passenger extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Depot,Destination FROM Route");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Depot,Destination FROM Route");
 			
 			while(rst.next())
 			{
@@ -261,8 +261,8 @@ public class Passenger extends JFrame{
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Pass_No FROM Passenger");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Pass_No FROM Passenger");
 			while(rst.next())
 			//text1.setText("1000");
 			{

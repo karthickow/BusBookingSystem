@@ -138,8 +138,8 @@ public class Booking_report extends JFrame  {
     	try {
                 
             ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("select Booking_No,PassName,Bus_RegNo,SeatNo,Date_of_Travel,Destination from BOOKING");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select Booking_No,PassName,Bus_RegNo,SeatNo,Date_of_Travel,Destination from BOOKING");
                 
 			
 				listPane.append("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");

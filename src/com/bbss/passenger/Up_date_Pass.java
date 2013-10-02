@@ -335,8 +335,8 @@ public class Up_date_Pass extends JFrame{
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Depot,Destination FROM Route");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Depot,Destination FROM Route");
 			
 			while(rst.next())
 			{

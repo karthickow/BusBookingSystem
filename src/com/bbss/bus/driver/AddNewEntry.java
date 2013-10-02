@@ -393,8 +393,8 @@ import com.bbss.login.LoginScreen;
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT empNo FROM Emp");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT empNo FROM Emp");
 			txtEmpNo.setText("1000");
 			while(rst.next())
 			{

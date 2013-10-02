@@ -216,8 +216,8 @@ public class Payment extends JFrame{
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Payment_No FROM Payment");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Payment_No FROM Payment");
 			text1.setText("1000");
 			while(rst.next())
 			{
@@ -242,8 +242,8 @@ public class Payment extends JFrame{
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Emp.empNo, Emp.Sname, Emp.Fname, Emp.Lname, Emp.Designation FROM Emp WHERE Emp.Designation='Booking Clerk'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Emp.empNo, Emp.Sname, Emp.Fname, Emp.Lname, Emp.Designation FROM Emp WHERE Emp.Designation='Booking Clerk'");
 			while(rst.next())
 			{
 				combo3.addItem(rst.getString(3));
@@ -263,8 +263,8 @@ public class Payment extends JFrame{
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT * FROM Passenger where Booked_Status='Booked' and Pay_Status='Not_Paid'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT * FROM Passenger where Booked_Status='Booked' and Pay_Status='Not_Paid'");
 			while(rst.next())
 			{
 				combo1.addItem(rst.getString(1));
@@ -286,8 +286,8 @@ public class Payment extends JFrame{
 		try
 		{
 		ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("SELECT Amount FROM BOOKING  where Pass_No='" + combo1.getSelectedItem() + "'");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("SELECT Amount FROM BOOKING  where Pass_No='" + combo1.getSelectedItem() + "'");
 			while(rst.next())
 			{
 				combo8.addItem(rst.getString(1));

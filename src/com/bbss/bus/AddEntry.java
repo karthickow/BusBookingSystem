@@ -314,8 +314,8 @@ import com.bbss.login.LoginScreen;
 		try
 		{
 		    ResultSet rst=Connect.getConnection().createStatement(
-			ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Buses where BusNo =(SELECT Max(Buses.BusNo) AS MaxOfBusNo FROM Buses)");
+			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select * from Buses where BusNo =(SELECT Max(Buses.BusNo) AS MaxOfBusNo FROM Buses)");
 			txtBusNo.setText("1000");
 			while(rst.next())
 			{
