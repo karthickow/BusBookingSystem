@@ -35,7 +35,7 @@ public class LoginScreen extends JFrame{
 	public JTextField user;
 	private JPasswordField pass;
 	private JButton Login,Cancel;
-	private JComboBox<String> cboCat;
+	private JComboBox cboCat;
 	private JPanel p1,p2,p4;
 	Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
 	public LoginScreen(){
@@ -47,7 +47,7 @@ public class LoginScreen extends JFrame{
 		user=new JTextField(10);
 		pass=new JPasswordField(10);
 		cat=new JLabel("Login As");
-		cboCat=new JComboBox<String>();
+		cboCat=new JComboBox();
 		cboCat.addItem("Manager");
 		cboCat.addItem("Supervisor");
 		cboCat.addItem("Booking Clerk");
