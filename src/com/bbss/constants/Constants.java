@@ -2,7 +2,10 @@ package com.bbss.constants;
 
 public interface Constants {
 
-	// Author	
+	// Author
+	String WARNING = "Warning!!!";
+	String ERROR = "Error!!!";
+	String EXIT = "Exit???";
 	String TITLE_AUTHOR = "Author";
 	String ABOUT = "Name : Kaviya K \n"
 			+ "Cell : 9994265605\n" + "E-mail : kaviyakp@gmail.com\n"

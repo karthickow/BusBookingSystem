@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.TableColumn;
 
 import com.bbss.bus.AddEntry;
 import com.bbss.bus.UpdateEntry;
@@ -33,9 +32,6 @@ import com.bbss.login.LoginScreen;
 import com.bbss.report.Bus_Details;
 
 public class Main extends JPanel implements Printable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -46,7 +42,6 @@ public class Main extends JPanel implements Printable {
 	private JPanel jPanel2;
 	private JButton jButton1, Reload, close;
 	private JButton jButton2;
-	// private JButton jButton3;
 
 	private JButton jButton4;
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -55,9 +50,9 @@ public class Main extends JPanel implements Printable {
 	public Main() {
 
 		jTable = new JTable(new AbstractTable());
-		TableColumn column = null;
+		
 		for (int i = 0; i < 7; i++) {
-			column = jTable.getColumnModel().getColumn(i);
+			jTable.getColumnModel().getColumn(i);
 
 			if (i == 4)
 				sdf.format(i);
@@ -156,9 +151,9 @@ public class Main extends JPanel implements Printable {
 	}
 
 	class AbstractTable extends javax.swing.table.AbstractTableModel {
-		private String[] columnNames = { "RegNo", "BusNo", "Model", "Capacity",
-				"Date purchased", "Insurance Status", "Date Insured",
-				"Expiry Date" };
+		private static final long serialVersionUID = 4153512033875104315L;
+
+		private String[] columnNames = { "RegNo", "BusNo", "Model", "Capacity",	"Date purchased", "Insurance Status", "Date Insured", "Expiry Date" };
 		private Object[][] data = new Object[50][50];
 
 		public int getColumnCount() {
