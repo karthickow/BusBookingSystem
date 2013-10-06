@@ -5,23 +5,22 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
+import com.bbss.constants.Constants;
 import com.bbss.db.connection.Connect;
-import com.bbss.login.LoginScreen;
 
 public class Route extends JPanel  {
+	private static final long serialVersionUID = -7342580282594979183L;
+
 	private static javax.swing.JTable jTable;
 	private JScrollPane jScrollPane;
 	private JPanel jPanel1;
@@ -30,12 +29,8 @@ public class Route extends JPanel  {
 	private JButton jButton2;
 	private JButton jButton3;
 	private JButton jButton4;
-	private JButton AddNew,Update,Remove,Search,Clear,Exit;
-	private static int rowCnt = 0;
 	private static int selectedRow;
-    private static JTextArea txtInfo=new JTextArea( 15, 40 );
-	private Connection dbconn;
-	private static String info;
+
 	public Route() {
 		jTable = new javax.swing.JTable(new AbstractTable());
 		javax.swing.table.TableColumn column = null;
@@ -53,61 +48,43 @@ public class Route extends JPanel  {
 		}
 
 		jScrollPane = new JScrollPane(jTable);
-
 		jPanel1 = new JPanel(new java.awt.BorderLayout());
-
 		jPanel1.add(jScrollPane, java.awt.BorderLayout.CENTER);
+		jButton1 = new JButton("ADD ENTRY",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/add.png"));
+		jButton2 = new JButton("UPDATE",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/reset.png"));
+		jButton3 = new JButton("REFRESH",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/reload.png"));
+		jButton4 = new JButton("CLOSE",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
 
-		jButton1 = new JButton("ADD ENTRY",new ImageIcon("Icon/i16x16/contents.png"));
-		jButton2 = new JButton("UPDATE",new ImageIcon("Icon/i16x16/reset.png"));
-		jButton3 = new JButton("REFRESH",new ImageIcon("Icon/i16x16/reload.png"));
-		jButton4 = new JButton("CLOSE",new ImageIcon("Icon/i16x16/exit.png"));
-        
 		jPanel2 = new JPanel(new FlowLayout());
-        		try
-
-         {
-	
-                Statement s = Connect.getConnection().createStatement();
-      }
-
-     
-      catch ( Exception excp )
-
-      {
-            excp.printStackTrace();	
-	  }     
 		jPanel2.add(jButton1);
 		jPanel2.add(jButton2);
 		jPanel2.add(jButton3);
 		jPanel2.add(jButton4);
-        setSize(800,400);
-        load_jTable();
-         
+		setSize(800,400);
+		load_jTable();
+
 		jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			new AddNew().setVisible(true);
+				new AddNew().setVisible(true);
 			}
 		});
-		
-		
 
-	jButton2.addActionListener(new ActionListener() {
+		jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			new Updatedata   (  jTable.getValueAt(getSelectedRow(), 0).toString(),
-								jTable.getValueAt(getSelectedRow(), 1).toString(),
-								jTable.getValueAt(getSelectedRow(), 2).toString(),
-								jTable.getValueAt(getSelectedRow(), 3).toString(),
-								jTable.getValueAt(getSelectedRow(), 4).toString(),
-								jTable.getValueAt(getSelectedRow(), 5).toString()).setVisible(true);
+				new Updatedata   (  jTable.getValueAt(getSelectedRow(), 0).toString(),
+						jTable.getValueAt(getSelectedRow(), 1).toString(),
+						jTable.getValueAt(getSelectedRow(), 2).toString(),
+						jTable.getValueAt(getSelectedRow(), 3).toString(),
+						jTable.getValueAt(getSelectedRow(), 4).toString(),
+						jTable.getValueAt(getSelectedRow(), 5).toString()).setVisible(true);
 			}
 		});
-       
+
 		jButton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-            	load_jTable();
-            	setVisible(true);
+				load_jTable();
+				setVisible(true);
 			}
 		});
 
@@ -124,8 +101,6 @@ public class Route extends JPanel  {
 		add(jPanel1);
 	}
 
-
-
 	public static int getSelectedRow() {
 		jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -134,7 +109,7 @@ public class Route extends JPanel  {
 			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) return;
 
-			ListSelectionModel sel = (ListSelectionModel)e.getSource();
+				ListSelectionModel sel = (ListSelectionModel)e.getSource();
 				if (!sel.isSelectionEmpty()) {
 					selectedRow = sel.getMinSelectionIndex();
 				}
@@ -144,9 +119,10 @@ public class Route extends JPanel  {
 		return selectedRow;
 	}
 
+	@SuppressWarnings("serial")
 	class AbstractTable extends javax.swing.table.AbstractTableModel {
 		private String[] columnNames = { "RouteNo", "Route Name", "From", "To" ,
-		"Distance","Fare_Charged"};
+				"Distance","Fare_Charged"};
 		private Object[][] data = new Object[100][6];
 
 		public int getColumnCount() {
@@ -171,33 +147,33 @@ public class Route extends JPanel  {
 		}
 	}
 
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		new LoginScreen().setVisible(true);
-		}
+	}*/
 	public void load_jTable(){
-		
+
 		try
-				{
-					Statement statement =Connect.getConnection().createStatement();
-					{
-							String temp = ("SELECT * FROM Route ORDER BY Route_No");
-					   int  Numrow = 0;
-					   ResultSet result = statement.executeQuery(temp);
-					   while (result.next()) {
-                         jTable.setValueAt(result.getString(1),Numrow,0);
-                         jTable.setValueAt(result.getString(2),Numrow,1);
-                         jTable.setValueAt(result.getString(3),Numrow,2);
-                         jTable.setValueAt(result.getString(4),Numrow,3);
-                         jTable.setValueAt(result.getString(5),Numrow,4);
-                         jTable.setValueAt(result.getString(6),Numrow,5);
-                         Numrow++;
-					   }	
-					   		
+		{
+			Statement statement =Connect.getConnection().createStatement();
+			{
+				String temp = ("SELECT * FROM Route ORDER BY Route_No");
+				int  Numrow = 0;
+				ResultSet result = statement.executeQuery(temp);
+				while (result.next()) {
+					jTable.setValueAt(result.getString(1),Numrow,0);
+					jTable.setValueAt(result.getString(2),Numrow,1);
+					jTable.setValueAt(result.getString(3),Numrow,2);
+					jTable.setValueAt(result.getString(4),Numrow,3);
+					jTable.setValueAt(result.getString(5),Numrow,4);
+					jTable.setValueAt(result.getString(6),Numrow,5);
+					Numrow++;
 				}	
-			}
-			catch ( SQLException sqlex ) {
-              sqlex.printStackTrace();
-             }	
+
+			}	
+		}
+		catch ( SQLException sqlex ) {
+			sqlex.printStackTrace();
+		}	
 	}
 }

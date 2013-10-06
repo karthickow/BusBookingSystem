@@ -19,9 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.bbss.constants.Constants;
 import com.bbss.db.connection.Connect;
-import com.bbss.welcome.MainMenu;
 public class NewUser extends JFrame {
+	private static final long serialVersionUID = 2446637996995045689L;
 	private JLabel username,password,confirm,label1,label2;
 	private JPasswordField pass1,pass2;
 	private JTextField txtusername,name;
@@ -40,10 +41,10 @@ public class NewUser extends JFrame {
 		pass2=new JPasswordField();
 		txtusername=new JTextField();
 		name=new JTextField();
-    	combo1=new JComboBox();
-		button1=new JButton ("Ok",new ImageIcon("Icon/i16x16/ok.png"));
-		button2=new JButton("Cancel",new ImageIcon("Icon/i16x16/exit.png"));
-		
+		combo1=new JComboBox();
+		button1=new JButton ("Ok",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/ok.png"));
+		button2=new JButton("Cancel",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
+
 		panel1=new JPanel(new GridLayout(6,2));
 		panel1.add(label1);panel1.add(name);
 		panel1.add(label2);panel1.add(combo1);
@@ -53,99 +54,100 @@ public class NewUser extends JFrame {
 		panel1.add(button1); panel1.add(button2);
 		combo1.addItem("Manager");
 		combo1.addItem("Booking Clerk");
- 		combo1.addItem("Supervisor");
+		combo1.addItem("Supervisor");
 		panel2=new JPanel();
 		panel2.add(panel1);
 		getContentPane().add(panel2);
 		setSize(350,195);
 		setVisible(true);
-	    setLocation((screen.width - 500)/2,((screen.height-350)/2));
-	    setResizable(false);
-	    name.addKeyListener(new KeyAdapter() {
-         public void keyTyped(KeyEvent e) {
-           char c = e.getKeyChar();
-           if (!(Character.isLetter(c) ||
-              (c == KeyEvent.VK_BACK_SPACE) ||
-              (c==KeyEvent.VK_SPACE) ||
-              (c == KeyEvent.VK_DELETE))) {
-             
-             getToolkit().beep();
-             JOptionPane.showMessageDialog(null,"Invalid Character","ERROR",
-             JOptionPane.DEFAULT_OPTION);
-             e.consume();
-           }
-         }
-       });
-      txtusername.addKeyListener(new KeyAdapter() {
-         public void keyTyped(KeyEvent e) {
-           char c = e.getKeyChar();
-           if (!(Character.isLetter(c) ||
-              (c == KeyEvent.VK_BACK_SPACE) ||
-              (c==KeyEvent.VK_SPACE) ||
-              (c == KeyEvent.VK_DELETE))) {
-             
-             getToolkit().beep();
-             JOptionPane.showMessageDialog(null,"Invalid Character","ERROR",
-             JOptionPane.DEFAULT_OPTION);
-             e.consume();
-           }
-         }
-       });
-	  button1.addActionListener(new java.awt.event.ActionListener() {
-	  public void actionPerformed(java.awt.event.ActionEvent e) {
-	  
-      
-      if (name.getText() == null ||
-      name.getText().equals("")){   
-      JOptionPane.showMessageDialog(null,"Enter name","ERROR",
-      JOptionPane.DEFAULT_OPTION);
-      name.requestFocus();
-      return;}
-      if (txtusername.getText() == null ||
-      txtusername.getText().equals("")){   
-      JOptionPane.showMessageDialog(null,"Enter username","ERROR"
-      ,JOptionPane.DEFAULT_OPTION);
-      txtusername.requestFocus();
-      return;
-      }
-      if (pass1.getText() == null ||
-      pass1.getText().equals("")){   
-      JOptionPane.showMessageDialog(null,"Enter password","ERROR",
-      JOptionPane.DEFAULT_OPTION);
-      pass1.requestFocus();
-      return;}
-      if (pass2.getText() == null ||
-      pass2.getText().equals("")){   
-      JOptionPane.showMessageDialog(null,"Confirm your password","ERROR",
-      JOptionPane.DEFAULT_OPTION);
-      pass2.requestFocus();
-      return;}
-      if (!pass1.getText().equals(pass2.getText())){
-      	JOptionPane.showMessageDialog(null,"passwords do not match.","ERROR",
-        JOptionPane.DEFAULT_OPTION);
-        pass2.requestFocus();
-        return;
-      }
+		setLocation((screen.width - 500)/2,((screen.height-350)/2));
+		setResizable(false);
+		name.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!(Character.isLetter(c) ||
+						(c == KeyEvent.VK_BACK_SPACE) ||
+						(c==KeyEvent.VK_SPACE) ||
+						(c == KeyEvent.VK_DELETE))) {
+
+					getToolkit().beep();
+					JOptionPane.showMessageDialog(null,"Invalid Character","ERROR",
+							JOptionPane.DEFAULT_OPTION);
+					e.consume();
+				}
+			}
+		});
+		txtusername.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!(Character.isLetter(c) ||
+						(c == KeyEvent.VK_BACK_SPACE) ||
+						(c==KeyEvent.VK_SPACE) ||
+						(c == KeyEvent.VK_DELETE))) {
+
+					getToolkit().beep();
+					JOptionPane.showMessageDialog(null,"Invalid Character","ERROR",
+							JOptionPane.DEFAULT_OPTION);
+					e.consume();
+				}
+			}
+		});
+		button1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				String pass = new String(pass1.getPassword());
+				String passr = new String(pass2.getPassword());
+				
+				if (name.getText() == null ||
+						name.getText().equals("")){   
+					JOptionPane.showMessageDialog(null,"Enter name","ERROR",
+							JOptionPane.DEFAULT_OPTION);
+					name.requestFocus();
+					return;}
+				if (txtusername.getText() == null ||
+						txtusername.getText().equals("")){   
+					JOptionPane.showMessageDialog(null,"Enter username","ERROR"
+							,JOptionPane.DEFAULT_OPTION);
+					txtusername.requestFocus();
+					return;
+				}
+				if (pass == null ||
+						pass.equals("")){   
+					JOptionPane.showMessageDialog(null,"Enter password","ERROR",
+							JOptionPane.DEFAULT_OPTION);
+					pass1.requestFocus();
+					return;}
+				if (passr == null ||
+						passr.equals("")){   
+					JOptionPane.showMessageDialog(null,"Confirm your password","ERROR",
+							JOptionPane.DEFAULT_OPTION);
+					pass2.requestFocus();
+					return;}
+				if (!pass.equals(passr)){
+					JOptionPane.showMessageDialog(null,"passwords do not match.","ERROR",
+							JOptionPane.DEFAULT_OPTION);
+					pass2.requestFocus();
+					return;
+				}
 				try{
 					Statement statement =Connect.getConnection().createStatement();
 					{
 						String temp = "INSERT INTO users (Name,Category,username, password) VALUES ('"+
-                             name.getText()            +"', '" +
-                             combo1.getSelectedItem()  +"', '" +                      
-                             txtusername.getText() 	   + "', '" +  			   
-			                 pass1.getText() 	       + "')";
-			   							   	 
-				    int result = statement.executeUpdate( temp );
-					JOptionPane.showMessageDialog(null,"User is succesfully added",
-                   "SUCCESS",JOptionPane.DEFAULT_OPTION);
-                   dispose();
+								name.getText()            +"', '" +
+								combo1.getSelectedItem()  +"', '" +                      
+								txtusername.getText() 	   + "', '" +  			   
+								pass 	       + "')";
+
+						statement.executeUpdate( temp );
+						JOptionPane.showMessageDialog(null,"User is succesfully added",
+								"SUCCESS",JOptionPane.DEFAULT_OPTION);
+						dispose();
 					}
-					
+
 				}
-			     catch(Exception in){
-			     	in.printStackTrace();
-			     }
-				
+				catch(Exception in){
+					in.printStackTrace();
+				}
+
 			}
 		});
 		button2.addActionListener( new ActionListener(){
@@ -154,8 +156,8 @@ public class NewUser extends JFrame {
 			}
 		});
 	}
-	public static void main(String[]args){
+	/*public static void main(String[]args){
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		new MainMenu().setVisible(true);
-	}
+	}*/
 }

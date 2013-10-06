@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -55,15 +56,10 @@ public class MainMenu extends JFrame implements WindowListener {
 	private static final long serialVersionUID = -6366475090524223554L;
 
 	JPanel Panel1;
-	JDesktopPane Desk1 = new JDesktopPane();
 	private JLabel welcome;
-	JLabel BusinessTitleLabel = new JLabel();
-	JLabel header=new JLabel();
-	private java.util.Date currDate = new java.util.Date ();
-    public JMenu MnuFile,MnuRec,MnuReport;
-	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
+	public JMenu MnuFile,MnuRec,MnuReport;
 	String StrBusinesTitle; 
-	private	static JMenuItem  Booking,Scheduling,Payment,NewUser,Passenger,Buses,Emps,Routes,Busrpt,Emprpt,shedrpt,bookrpt;
+	private	static JMenuItem ItmExit, Booking,Scheduling,Payment,NewUser,Passenger,Buses,Emps,Routes,Busrpt,Emprpt,shedrpt,bookrpt;
 	public JButton  NewJButton;
     Connection getConnection;
 	Main  buses;
@@ -72,41 +68,45 @@ public class MainMenu extends JFrame implements WindowListener {
 	Schedule Sched;
 	Route Rut;
 	PASS pass;
-	frmSplash FormSplash = new frmSplash();
+	ResultSet rsLogin;
 	
-    ResultSet rsLogin;	
+	JDesktopPane Desk1 = new JDesktopPane();	
+	//JLabel BusinessTitleLabel = new JLabel();
+	JLabel header;
+	private Date currDate = new Date();
+	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
+	frmSplash FormSplash = new frmSplash();
 	Thread ThFormSplash = new Thread(FormSplash);
 	
     public MainMenu(){
    	
-    	super("tobiluoch softAgencies");
+    	super(Constants.SUPER_TITLE);
    			
 		header=new JLabel(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/Logo.png"));
-	    welcome = new JLabel ("Welcome Today is " + currDate + " ",JLabel.CENTER);
+	    welcome = new JLabel ("Welcome today's date is " + currDate + " ",JLabel.CENTER);
 	    welcome.setFont(new Font("Dialog", Font.PLAIN, 12));
 		welcome.setForeground(Color.blue);
-		BusinessTitleLabel.setText(StrBusinesTitle);
+		/*BusinessTitleLabel.setText(StrBusinesTitle);
 		BusinessTitleLabel.setHorizontalAlignment(JLabel.LEFT);
-		BusinessTitleLabel.setForeground(new Color(166,0,0));
+		BusinessTitleLabel.setForeground(new Color(166,0,0));*/
 	     
 	    addWindowListener(this);
 	
 		Desk1.setBackground(Color.gray);
-		 
 		Desk1.setBorder(BorderFactory.createEmptyBorder());
-			
 		Desk1.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
 	        
 	    Panel1 = new JPanel(new BorderLayout());
-	        
 	    Panel1.setBackground(Color.gray);
 		Panel1.setBorder(BorderFactory.createLoweredBevelBorder());
 	    Panel1.add(new JScrollPane(Desk1),BorderLayout.CENTER);
-	        
+	    
+	    // Used to add logo for the application
 		getContentPane().add(CreateJToolBar(),BorderLayout.PAGE_START);
 		getContentPane().add(Panel1,BorderLayout.CENTER);
 	
 	    getContentPane().add(welcome,BorderLayout.PAGE_END,JLabel.CENTER);
+	    // Used to add menubar, menus and submenus for the application 
 		setJMenuBar(CreateJMenuBar());
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 	
@@ -117,7 +117,8 @@ public class MainMenu extends JFrame implements WindowListener {
 		setVisible(true);
 		//show(); 
     }
-     
+    
+    // Used to add menubar, menus and submenus for the application
     protected JMenuBar CreateJMenuBar(){
     	
     	JMenuBar NewJMenuBar = new JMenuBar();
@@ -125,15 +126,16 @@ public class MainMenu extends JFrame implements WindowListener {
     	MnuFile = new JMenu("Operations");
 		MnuFile.setForeground((Color.blue));
 		MnuFile.setFont(new Font("Dialog", Font.PLAIN, 12));
-		MnuFile.setMnemonic('O');
+		MnuFile.setMnemonic(KeyEvent.VK_O);
 		MnuFile.setBackground(new Color(255,255,255));
 		NewJMenuBar.add(MnuFile);
 		MnuFile.setEnabled(false);
+		
 		NewUser = new JMenuItem("AddNew User");
 		NewUser.setForeground(Color.blue);
 		NewUser.setFont(new Font("Dialog", Font.PLAIN, 12));
-		NewUser.setMnemonic('L');
-		NewUser.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/lockapplication.png"));
+		NewUser.setMnemonic(KeyEvent.VK_L);
+		NewUser.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/new.png"));
 		NewUser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.CTRL_MASK));
 		NewUser.setActionCommand("new");
 		NewUser.addActionListener(JMenuActionListener);
@@ -142,17 +144,17 @@ public class MainMenu extends JFrame implements WindowListener {
 		JMenuItem ItmLockApp = new JMenuItem("Lock Application");
 		ItmLockApp.setForeground(Color.blue);
 		ItmLockApp.setFont(new Font("Dialog", Font.PLAIN, 12));
-		ItmLockApp.setMnemonic('N');
+		ItmLockApp.setMnemonic(KeyEvent.VK_N);
 		ItmLockApp.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/lockapplication.png"));
 		ItmLockApp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.CTRL_MASK));
 		ItmLockApp.setActionCommand("lockapp");
 		ItmLockApp.addActionListener(JMenuActionListener);
 		ItmLockApp.setBackground(new Color(255,255,255));
-	
-		JMenuItem ItmExit = new JMenuItem("Exit");
+		
+		ItmExit = new JMenuItem("Exit");
 		ItmExit.setForeground(Color.blue);
 		ItmExit.setFont(new Font("Dialog", Font.PLAIN, 12));
-		ItmExit.setMnemonic('E');
+		ItmExit.setMnemonic(KeyEvent.VK_E);
 		ItmExit.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
 		ItmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,ActionEvent.CTRL_MASK));
 		ItmExit.setActionCommand("exit");
@@ -167,16 +169,17 @@ public class MainMenu extends JFrame implements WindowListener {
 		MnuRec = new JMenu("Files");
 		MnuRec.setFont(new Font("Dialog", Font.PLAIN, 12));
 		MnuRec.setForeground ((Color.blue));
-		MnuRec.setMnemonic('F');
+		MnuRec.setMnemonic(KeyEvent.VK_F);
 		MnuRec.setBackground(new Color(255,255,255));
 		NewJMenuBar.add(MnuRec);
 		MnuRec.setEnabled(false);
+		
 	    Buses = new JMenuItem("Buses");
 		Buses.setForeground(Color.blue);
 		Buses.setEnabled(true);
 		Buses.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Buses.setMnemonic('B');
-	    Buses.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Buses.setMnemonic(KeyEvent.VK_B);
+	    Buses.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/bus.png"));
 		Buses.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 		Buses.setActionCommand("Buses");
 		Buses.addActionListener(JMenuActionListener);
@@ -188,22 +191,23 @@ public class MainMenu extends JFrame implements WindowListener {
 		Emps.setForeground(Color.blue);
 		Emps.setEnabled(true);
 		Emps.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Emps.setMnemonic('E');
-		Emps.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Emps.setMnemonic(KeyEvent.VK_E);
+		Emps.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/employees.png"));
 		Emps.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,ActionEvent.CTRL_MASK));
 		Emps.setActionCommand("Emp");
 		Emps.addActionListener(JMenuActionListener);
 		Emps.setBackground(new Color(255,255,255));
 	
 		MnuRec.add(Emps);
-	    NewJMenuBar.setBackground(new Color(255,255,255));
+		
+	    //NewJMenuBar.setBackground(new Color(255,255,255));
 			    
 	    Routes = new JMenuItem("Routes");
 	    Routes.setEnabled(true);
 	    Routes.setForeground(Color.blue);
 	    Routes.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Routes.setMnemonic('R');		
-		Routes.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));		
+		Routes.setMnemonic(KeyEvent.VK_R);		
+		Routes.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/route.png"));		
 		Routes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,ActionEvent.CTRL_MASK));
 		Routes.setActionCommand("rute");
 		Routes.addActionListener(JMenuActionListener);
@@ -215,8 +219,8 @@ public class MainMenu extends JFrame implements WindowListener {
 		Passenger.setForeground(Color.blue);
 		Passenger.setEnabled(false);
 		Passenger.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Passenger.setMnemonic('P');
-	    Passenger.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Passenger.setMnemonic(KeyEvent.VK_P);
+	    Passenger.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/pass.png"));
 		Passenger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,ActionEvent.CTRL_MASK));
 		Passenger.setActionCommand("pase");
 		Passenger.addActionListener(JMenuActionListener);
@@ -227,28 +231,30 @@ public class MainMenu extends JFrame implements WindowListener {
 	    JMenu MnuTrans = new JMenu("Processes ");
 		MnuTrans.setFont(new Font("Dialog", Font.PLAIN, 12));
 		MnuTrans.setForeground((Color.blue));
-		MnuTrans.setMnemonic('P');
+		MnuTrans.setMnemonic(KeyEvent.VK_P);
 		MnuTrans.setBackground(new Color(255,255,255));
+		
 		NewJMenuBar.add(MnuTrans);
 			
 		Scheduling = new JMenuItem("Scheduling");
 		Scheduling.setEnabled(false);
 		Scheduling.setForeground(Color.blue);
 		Scheduling.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Scheduling.setMnemonic('S');
-	    Scheduling.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Scheduling.setMnemonic(KeyEvent.VK_S);
+	    Scheduling.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/calendar.png"));
 		Scheduling.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		Scheduling.setActionCommand("ched");
 		Scheduling.addActionListener(JMenuActionListener);
 		Scheduling.setBackground(new Color(255,255,255));
 	
 		MnuTrans.add(Scheduling);
+		
 	    Booking=new JMenuItem("Booking");
 		Booking.setEnabled(false);
 		Booking.setForeground(Color.blue);
 		Booking.setFont(new Font("Dialog",Font.PLAIN,12));
-		Booking.setMnemonic('B');
-		Booking.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Booking.setMnemonic(KeyEvent.VK_B);
+		Booking.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/book.png"));
 		Booking.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K,ActionEvent.CTRL_MASK));
 	    Booking.setActionCommand("buk");
 		Booking.addActionListener(JMenuActionListener);
@@ -260,8 +266,8 @@ public class MainMenu extends JFrame implements WindowListener {
 		Payment.setForeground(Color.blue);
 		Payment.setEnabled(false);
 		Payment.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Payment.setMnemonic('P');
-	    Payment.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Payment.setMnemonic(KeyEvent.VK_P);
+	    Payment.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/pay.png"));
 		Payment.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,ActionEvent.CTRL_MASK));
 		Payment.setActionCommand("Pay");
 		Payment.addActionListener(JMenuActionListener);
@@ -272,69 +278,72 @@ public class MainMenu extends JFrame implements WindowListener {
 		MnuReport = new JMenu("Reports ");
 		MnuReport.setFont(new Font("Dialog", Font.PLAIN, 12));
 		MnuReport.setForeground(Color.blue);
-		MnuReport.setMnemonic('R');
+		MnuReport.setMnemonic(KeyEvent.VK_R);
 		MnuReport.setBackground(new Color(255,255,255));
+		
 		NewJMenuBar.add(MnuReport);	
 		
 		Busrpt = new JMenuItem("Bus Report");
 		Busrpt.setForeground(Color.blue);
-		
 		Busrpt.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Busrpt.setMnemonic('P');
-	    Busrpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Busrpt.setMnemonic(KeyEvent.VK_P);
+	    Busrpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/busr.png"));
 		Busrpt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y,ActionEvent.CTRL_MASK));
 		Busrpt.setActionCommand("Busrpt");
 		Busrpt.addActionListener(JMenuActionListener);
 		Busrpt.setBackground(new Color(255,255,255));
-	    MnuReport.add(Busrpt);
+	   
+		MnuReport.add(Busrpt);
 	    
 	    Emprpt = new JMenuItem("Employee Report");
 		Emprpt.setForeground(Color.blue);
 		//Busrpt.setEnabled(false);
 		Emprpt.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Emprpt.setMnemonic('P');
-	    Emprpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		Emprpt.setMnemonic(KeyEvent.VK_P);
+	    Emprpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/empr.png"));
 		Emprpt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,ActionEvent.CTRL_MASK));
 		Emprpt.setActionCommand("emprpt");
 		Emprpt.addActionListener(JMenuActionListener);
 		Emprpt.setBackground(new Color(255,255,255));
-	    MnuReport.add(Emprpt);
+	    
+		MnuReport.add(Emprpt);
 	    
 	    shedrpt = new JMenuItem("Scheduling Report");
 		shedrpt.setForeground(Color.blue);
-		
 		shedrpt.setFont(new Font("Dialog", Font.PLAIN, 12));
-		shedrpt.setMnemonic('S');
-	    shedrpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		shedrpt.setMnemonic(KeyEvent.VK_S);
+	    shedrpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/schr.png"));
 		shedrpt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 		shedrpt.setActionCommand("schedrpt");
 		shedrpt.addActionListener(JMenuActionListener);
 		shedrpt.setBackground(new Color(255,255,255));
-	    MnuReport.add(shedrpt);
+	    
+		MnuReport.add(shedrpt);
 	    
 	    bookrpt = new JMenuItem("Booking Report");
 		bookrpt.setForeground(Color.blue);
-		
 		bookrpt.setFont(new Font("Dialog", Font.PLAIN, 12));
-		bookrpt.setMnemonic('B');
-	    bookrpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/categories.png"));
+		bookrpt.setMnemonic(KeyEvent.VK_B);
+	    bookrpt.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/bookr.png"));
 		bookrpt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,ActionEvent.CTRL_MASK));
 		bookrpt.setActionCommand("bukdrpt");
 		bookrpt.addActionListener(JMenuActionListener);
 		bookrpt.setBackground(new Color(255,255,255));
-	    MnuReport.add(bookrpt);
+	    
+		MnuReport.add(bookrpt);
 		
 		JMenu MnuTools = new JMenu("Tools ");
 		MnuTools.setFont(new Font("Dialog", Font.PLAIN, 12));
 		MnuTools.setForeground(Color.blue);
-		MnuTools.setMnemonic('T');
+		MnuTools.setMnemonic(KeyEvent.VK_T);
 		MnuTools.setBackground(new Color(255,255,255));
-		NewJMenuBar.add(MnuTools);
+		
+		//NewJMenuBar.add(MnuTools);
 			
 		JMenuItem Calculator = new JMenuItem("Calculator");
 		Calculator.setForeground(Color.blue);
 		Calculator.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Calculator.setMnemonic('C');
+		Calculator.setMnemonic(KeyEvent.VK_C);
 	    Calculator.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/calc.png"));
 		Calculator.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK));
 		Calculator.setActionCommand("calculator");
@@ -346,7 +355,7 @@ public class MainMenu extends JFrame implements WindowListener {
 	    JMenuItem Note = new JMenuItem("EDITOR");
 	    Note.setForeground(Color.blue);
 		Note.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Note.setMnemonic('N');
+		Note.setMnemonic(KeyEvent.VK_N);
 	    Note.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/notepad.png"));
 		Note.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
 		Note.setActionCommand("note");
@@ -358,15 +367,16 @@ public class MainMenu extends JFrame implements WindowListener {
 	    JMenu Options=new JMenu ("Change Background");
 	    Options.setFont(new Font("Dialog",Font.PLAIN,12));
 	    Options.setForeground(Color.blue);
-	    Options.setMnemonic('C');
+	    Options.setMnemonic(KeyEvent.VK_C);
 	    Options.setBackground(new Color(255,255,255));
-		NewJMenuBar.add(Options);
+		
+	    NewJMenuBar.add(Options);
 		
 		JMenuItem Change = new JMenuItem("Options");
 		Change.setForeground(Color.blue);
 		Change.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Change.setMnemonic('O');
-	    
+		Change.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/background.png"));
+		Change.setMnemonic(KeyEvent.VK_O);
 		Change.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
 		Change.setActionCommand("change");
 		Change.addActionListener(JMenuActionListener);
@@ -376,14 +386,14 @@ public class MainMenu extends JFrame implements WindowListener {
 	    JMenu MnuHelp = new JMenu("Help ");
 		MnuHelp.setFont(new Font("Dialog", Font.PLAIN, 12));
 		MnuHelp.setForeground(Color.blue);
-		MnuHelp.setMnemonic('H');
+		MnuHelp.setMnemonic(KeyEvent.VK_H);
 		MnuHelp.setBackground(new Color(255,255,255));
 		NewJMenuBar.add(MnuHelp);
 			
 		JMenuItem Authour = new JMenuItem("Author");
 		Authour.setForeground(Color.blue);
 		Authour.setFont(new Font("Dialog", Font.PLAIN, 12));
-		Authour.setMnemonic('A');
+		Authour.setMnemonic(KeyEvent.VK_A);
 	    Authour.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/Author.png"));
 		Authour.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,ActionEvent.CTRL_MASK));
 		Authour.setActionCommand("me");
@@ -394,21 +404,22 @@ public class MainMenu extends JFrame implements WindowListener {
 		JMenuItem man = new JMenuItem("User Manual");
 		man.setForeground(Color.blue);
 		man.setFont(new Font("Dialog", Font.PLAIN, 12));
-		man.setMnemonic('U');
-	    man.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/HELPER.png"));
+		man.setMnemonic(KeyEvent.VK_U);
+	    man.setIcon(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/manual.png"));
 		man.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,ActionEvent.CTRL_MASK));
 		man.setActionCommand("user");
 		man.addActionListener(JMenuActionListener);
 	
 		MnuHelp.add(man);
 		
-	    NewJMenuBar.setBackground(new Color(255,255,255));
+	    //NewJMenuBar.setBackground(new Color(255,255,255));
 		
 	    return NewJMenuBar;
     }
 	
-     protected JToolBar CreateJToolBar (){
-		JToolBar NewJToolBar = new JToolBar("Toolbar");
+    // Used to add logo for the application
+    protected JToolBar CreateJToolBar (){
+    	JToolBar NewJToolBar = new JToolBar("Toolbar");
 	
 		NewJToolBar.setMargin(new Insets(0,0,0,0));	
 		NewJToolBar.add(header);
@@ -496,39 +507,51 @@ public class MainMenu extends JFrame implements WindowListener {
 			if(srcObject=="Buses"){
 				try{
 					buses();
-				}catch(Exception sqle){}
+				}catch(Exception sqle){
+					JOptionPane.showMessageDialog(null, sqle.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+				}
 			} 
 			
 			else if(srcObject=="Emp"){
 				try{
 					emp();
-				}catch(Exception sqle){}
+				}catch(Exception sqle){
+					JOptionPane.showMessageDialog(null, sqle.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 			else if(srcObject=="rute"){
 				try{
 					rut();
-				}catch(Exception sqle){}
+				}catch(Exception sqle){
+					JOptionPane.showMessageDialog(null, sqle.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 			else if(srcObject=="calculator"){
 				try{
 					//runComponents("Calc.exe");
 					new MyCalc().setVisible(true);
-				}catch(Exception sqle){}
+				}catch(Exception sqle){
+					JOptionPane.showMessageDialog(null, sqle.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 			else if(srcObject=="pase"){
 				try{
 					pase();
-				}catch(Exception sqle){}
+				}catch(Exception sqle){
+					JOptionPane.showMessageDialog(null, sqle.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 			else if(srcObject=="note"){ 
 				try{
 					//runComponents("Notepad.exe");
 					new editor().setVisible(true);
-				}catch(Exception sqle){}
+				}catch(Exception sqle){
+					JOptionPane.showMessageDialog(null, sqle.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 			else if(srcObject=="me"){
@@ -536,7 +559,6 @@ public class MainMenu extends JFrame implements WindowListener {
             }
             else if(srcObject=="ched"){                  
             	new Schedule().setVisible(true);
-            
 			}
 			
             else if(srcObject=="exit"){
@@ -544,7 +566,7 @@ public class MainMenu extends JFrame implements WindowListener {
 			}
 			
             else if(srcObject=="user"){
-				runURL("manual1/Main.html");
+				runURL(Constants.USER_DIR+"/src/com/bbss/manual/Main.html");
 			}
 			
             else if(srcObject=="buk"){
@@ -640,6 +662,7 @@ public class MainMenu extends JFrame implements WindowListener {
 					Form[i].setIcon(true);
 					Form[i].setSelected(true);
 				}catch(Exception e){
+					JOptionPane.showMessageDialog(null, e.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 				}
 				return true;
 			}
@@ -657,14 +680,18 @@ public class MainMenu extends JFrame implements WindowListener {
 		try{
 			rt.exec(sComponents);
 		}
-		catch(IOException evt){JOptionPane.showMessageDialog(null, evt.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);}
+		catch(IOException evt){
+			JOptionPane.showMessageDialog(null, evt.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	protected void runURL(String sURL){		
 		try{
 			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + sURL);
 		}
-		catch(Exception ex){}
+		catch(Exception ex){
+			JOptionPane.showMessageDialog(null, ex.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+		}
 	}		
 	
 	public void enabeManagerPermission(){
@@ -680,6 +707,9 @@ public class MainMenu extends JFrame implements WindowListener {
 	}
 	
 	public void enabeSupervisorPermission(){
+		MnuFile.setEnabled(true);
+		NewUser.setEnabled(false);
+		ItmExit.setEnabled(true);
 		MnuRec.setEnabled(true);
 		Scheduling.setEnabled(true);
 		Payment.setEnabled(true);
@@ -689,9 +719,12 @@ public class MainMenu extends JFrame implements WindowListener {
 	}
 	
 	public void enableBookingClerkPermission(){
+		MnuFile.setEnabled(true);
+		NewUser.setEnabled(false);
 		Booking.setEnabled(true);
 		Payment.setEnabled(true);
 		MnuRec.setEnabled(true);
 		Passenger.setEnabled(true);
+		ItmExit.setEnabled(true);
 	}		
 }

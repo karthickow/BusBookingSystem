@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,7 +36,6 @@ public class Main extends JPanel implements Printable {
 	private static final long serialVersionUID = 1L;
 
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-	JFrame JFParentFrame;
 	private static JTable jTable;
 	private JScrollPane jScrollPane;
 	private JPanel jPanel1;
@@ -48,7 +48,6 @@ public class Main extends JPanel implements Printable {
 	private static int selectedRow;
 
 	public Main() {
-
 		jTable = new JTable(new AbstractTable());
 		
 		for (int i = 0; i < 7; i++) {
@@ -62,7 +61,7 @@ public class Main extends JPanel implements Printable {
 
 		jPanel1 = new JPanel(new BorderLayout());
 		jPanel1.add(jScrollPane, BorderLayout.CENTER);
-		jButton1 = new JButton("ADD NEW", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/contents.png"));
+		jButton1 = new JButton("ADD NEW", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/add.png"));
 		jButton2 = new JButton("UPDATE", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/reset.png"));
 		Reload = new JButton("REFRESH", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/reload.png"));
 		close = new JButton("CLOSE", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
@@ -201,6 +200,7 @@ public class Main extends JPanel implements Printable {
 				}
 			}
 		} catch (SQLException sqlex) {
+			JOptionPane.showMessageDialog(null, sqlex.getMessage(), Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

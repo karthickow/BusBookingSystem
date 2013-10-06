@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JWindow;
 
 public class frmSplash extends JWindow implements Runnable{
+	private static final long serialVersionUID = -4081707536885337250L;
+
 	public void run(){
 		JLabel SplashLabel = new JLabel(new ImageIcon("pic.png"));
 		
@@ -18,6 +20,7 @@ public class frmSplash extends JWindow implements Runnable{
 		
 		setSize(600,500);
 		setLocation((screen.width - 490)/2,((screen.height-300)/2));
-		show();
+		//show();
+		setVisible(true);
 	}
 }

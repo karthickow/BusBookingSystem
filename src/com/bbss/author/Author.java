@@ -19,21 +19,21 @@ public class Author extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private JLabel me;
-	private JButton view, exit;
+	private JButton exit;
 	private JTextArea about;
 	private JPanel pan, pan2;
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public Author() {
 		super(Constants.TITLE_AUTHOR);
-		me = new JLabel(new ImageIcon("aut.jpg"));
-		view = new JButton("More Info");
+		me = new JLabel(new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/aut.png"));
+		//view = new JButton("More Info");
 		exit = new JButton("Exit");
 
 		about = new JTextArea(Constants.ABOUT);
 		about.setForeground(Color.blue);
 		pan2 = new JPanel();
-		pan2.add(view);
+		//pan2.add(view);
 		pan2.add(exit);
 		pan = new JPanel(new GridLayout(2, 2));
 		pan.setPreferredSize(new Dimension(450, 300));

@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -55,6 +56,8 @@ public class LoginScreen extends JFrame{
 		
 		Login=new JButton ("Login", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/ok.png"));
 		Cancel=new JButton("Cancel",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
+		Login.setMnemonic(KeyEvent.VK_L);
+		Cancel.setMnemonic(KeyEvent.VK_C);
 		
 		t1.setFont(new Font("verdana", Font.PLAIN, 12));
 		t1.setForeground(Color.red);
@@ -117,7 +120,7 @@ public class LoginScreen extends JFrame{
 				}
             
 				if (password == null || password.equals("")){   
-					JOptionPane.showMessageDialog(null, "Enter Password", Constants.WARNING, JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showMessageDialog(null, "Enter Password", Constants.WARNING, JOptionPane.WARNING_MESSAGE);
 					pass.requestFocus();
 					return;
 				}
@@ -171,9 +174,9 @@ public class LoginScreen extends JFrame{
 		}
 	}
 
-	public static void main(String[]args){
+	/*public static void main(String[]args){
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		new LoginScreen();
-	}
+	}*/
 }
 

@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.bbss.button.DateButton;
+import com.bbss.constants.Constants;
 import com.bbss.db.connection.Connect;
 import com.bbss.report.Booking_report;
 
@@ -38,7 +39,7 @@ public class Booking extends JFrame {
 	private DateButton t_date;
 
 	public Booking() {
-		super("Booking Process");
+		super(Constants.BOOKING_TITLE);
 		label = new JLabel("Booking Number");
 		label1 = new JLabel("Passenger Number");
 		label2 = new JLabel("Passenger Name");
@@ -68,15 +69,15 @@ public class Booking extends JFrame {
 		for (int i = 1; i <= 45; i++)
 			combo6.addItem(Integer.toString(i));
 
-		button1 = new JButton("ADD NEW", new ImageIcon("Icon/i16x16/contents.png"));
-		button3 = new JButton("SEARCH", new ImageIcon("Icon/i16x16/search.png"));
-		button4 = new JButton("CANCEL", new ImageIcon("Icon/i16x16/exit.png"));
-		button5 = new JButton("CLEAR", new ImageIcon("Icon/i16x16/delete.png"));
-		button6 = new JButton("SHOW_BOOKED", new ImageIcon("Icon/i16x16/Attendance.png"));
-		button7 = new JButton("PRINT", new ImageIcon("Icon/i16x16/prints.png"));
+		button1 = new JButton("ADD NEW", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/add.png"));
+		button3 = new JButton("SEARCH", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/search.png"));
+		button4 = new JButton("CANCEL", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
+		button5 = new JButton("CLEAR", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/delete.png"));
+		button6 = new JButton("SHOW_BOOKED", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/Attendance.png"));
+		button7 = new JButton("PRINT", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/prints.png"));
 
-		ok = new JButton("OK", new ImageIcon("Icon/i16x16/ok.png"));
-		next = new JButton("Next", new ImageIcon("Icon/i16x16/2rightarrow.png"));
+		ok = new JButton("OK", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/ok.png"));
+		next = new JButton("Next", new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/2rightarrow.png"));
 
 		button1.setEnabled(false);
 		// button2.setEnabled(false);
@@ -115,6 +116,7 @@ public class Booking extends JFrame {
 		pane.add(label10);
 		pane.add(combo7);
 		pane.add(ok);
+		//pane.add(next);
 
 		controls = new JPanel(new GridLayout(3, 2));
 		controls.add(button1);
@@ -148,9 +150,7 @@ public class Booking extends JFrame {
 						Integer.parseInt(content);
 					} catch (NumberFormatException nfe) {
 						getToolkit().beep();
-						JOptionPane.showMessageDialog(null,
-								"Invalid data entry", "ERROR",
-								JOptionPane.DEFAULT_OPTION);
+						JOptionPane.showMessageDialog(null, Constants.INVALID, Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 						textField.requestFocus();
 						text1.setText("");
 					}
@@ -175,7 +175,7 @@ public class Booking extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (combo7.getSelectedItem() == null) {
 					JOptionPane.showMessageDialog(null,	"Please note that you can't do\n"+ "booking before scheduling is done\n"
-							+ "make sure you do the scheduling before booking starts", "ERROR", JOptionPane.DEFAULT_OPTION);
+							+ "make sure you do the scheduling before booking starts", Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				setCbx();
@@ -375,7 +375,7 @@ public class Booking extends JFrame {
 			}
 
 			else {
-				JOptionPane.showMessageDialog(null, "Record Not found", "ERROR", JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showMessageDialog(null, Constants.RECORD_NOT_FOUND, Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 			}
 
 		} catch (SQLException sqlex){
@@ -383,10 +383,10 @@ public class Booking extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		new Booking().setVisible(true);
-	}
+	}*/
 
 	private void book() {
 		String SQL;
@@ -400,17 +400,17 @@ public class Booking extends JFrame {
 			boolean recordfound = rs.next();
 
 			if (recordfound) {
-				JOptionPane.showMessageDialog(null, "Error Occures.Pliz Compare your Entry and\n"+ "the already booked and try again", "Error",	JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error!!! Check your Entry.\n"+ "Its already booked. Please try again", Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 				new Show_Booked().setVisible(true);
 				return;
 			} else {
 				if (text1.getText() == null || text1.getText().equals("")) {
-					JOptionPane.showMessageDialog(null,	"Enter Passenger Number", "ERROR", JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showMessageDialog(null,	"Enter Passenger Number", Constants.WARNING, JOptionPane.WARNING_MESSAGE);
 					text1.requestFocus();
 					return;
 				}
 				if (combo7.getSelectedItem() == null) {
-					JOptionPane.showMessageDialog(null,	"Please note that you can't do\n"+ "booking before scheduling is done",	"ERROR", JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showMessageDialog(null,	"Please note that you can't do\n"+ "booking before scheduling is done",	Constants.ERROR, JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
@@ -441,7 +441,7 @@ public class Booking extends JFrame {
 						statement.executeUpdate(temp);
 						
 						String ObjButtons[] = { "Yes", "No" };
-						int PromptResult = JOptionPane.showOptionDialog(null,"Record succesfully added.Continue with Booking?","tobiluoch",JOptionPane.DEFAULT_OPTION,
+						int PromptResult = JOptionPane.showOptionDialog(null,"Record succesfully added.Continue with Booking?",Constants.SUPER_TITLE,JOptionPane.DEFAULT_OPTION,
 										JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
 						if (PromptResult == 0) {
 							generator();

@@ -11,10 +11,6 @@ import javax.swing.JFrame;
 import com.bbss.util.DateChooser;
 public class DateButton extends JButton
 {
-    
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");

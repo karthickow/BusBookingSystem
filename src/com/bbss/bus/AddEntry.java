@@ -11,8 +11,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,43 +21,38 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.bbss.button.DateButton;
+import com.bbss.constants.Constants;
 import com.bbss.db.connection.Connect;
-import com.bbss.login.LoginScreen;
 
+public class AddEntry extends JFrame {
 
-    public class AddEntry extends JFrame {
+    private static final long serialVersionUID = -7463793967860489365L;
+
 	private JLabel BusNo,RegNo,Model,Capacity,DP,Ins,DI,DE;
 	
 	private JTextField txtBusNo,txtRegNo,txtModel,txtCapacity,txtIns;
 	
-	private JButton AddNew,Cancel,Clear,Next;
+	private JButton AddNew,Cancel,Clear;
 	private JPanel jPanel1;
 	private JPanel jPanel3;
 	private JPanel jPanel4;
 	private JPanel jPanel5;
-    private static JTextArea txtInfo=new JTextArea( 15, 40 );
-	private Connection dbconn;
-	private static String info;
 	private DateButton date_bought;
     private DateButton date_ins;
     private DateButton date_expiry;
-    private Date startDate;
-    private Date endDate;
     Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
-	public AddEntry(){
-		
+    
+    public AddEntry(){		
 		super("New Bus Entry");
                
 		setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
-
 		setResizable(true);
 		BusNo = new JLabel("Bus Number ");
 		RegNo = new JLabel("Reg Number ");
-		Model = new JLabel("Model.: ");
+		Model = new JLabel("Model");
 		Capacity = new JLabel("Capacity ");
         DP = new JLabel("Date Purchased");
         Ins = new JLabel("Insurance Status");
@@ -70,14 +63,12 @@ import com.bbss.login.LoginScreen;
 		txtRegNo = new JTextField(10);
 		txtModel = new JTextField(10);
 		txtCapacity = new JTextField(10);
-        
         txtIns = new JTextField(10);
 
-	
 		txtBusNo.setForeground(Color.blue);
-		AddNew = new JButton("ADD RECORD",new ImageIcon("Icon/i16x16/contents.png"));
-		Cancel = new JButton("CANCEL",new ImageIcon("Icon/i16x16/exit.png"));
-        Clear=new JButton ("CLEAR",new ImageIcon("Icon/i16x16/delete.png"));
+		AddNew = new JButton("ADD RECORD",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/add.png"));
+		Cancel = new JButton("CANCEL",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
+        Clear=new JButton ("CLEAR",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/delete.png"));
 	    date_bought = new DateButton();
 	    date_ins=new DateButton();
 	    date_expiry=new DateButton();
@@ -98,12 +89,10 @@ import com.bbss.login.LoginScreen;
         jPanel1.add(DE);jPanel1.add(date_expiry);
        
 		jPanel3 = new JPanel(new java.awt.FlowLayout());
-
 		jPanel3.add(jPanel1);
 	
 
 		jPanel4 = new javax.swing.JPanel(new java.awt.FlowLayout());
-
 		jPanel4.add(AddNew);
 		jPanel4.add(Cancel);
 		jPanel4.add(Clear);
@@ -111,190 +100,143 @@ import com.bbss.login.LoginScreen;
 		generator();		 
 		setLocation((screen.width - 500)/2,((screen.height-350)/2));
 		setResizable(false);	
-		 txtModel.addKeyListener(new KeyAdapter() {
-         public void keyTyped(KeyEvent e) {
-           char c = e.getKeyChar();
-           if (!(Character.isLetter(c) ||
-              (c == KeyEvent.VK_BACK_SPACE) ||
-              (c==KeyEvent.VK_SPACE) ||
-              (c == KeyEvent.VK_DELETE))) {
-             
-             getToolkit().beep();
-             JOptionPane.showMessageDialog(null,"This Field Only acept text","ERROR",
-             JOptionPane.DEFAULT_OPTION);
-             e.consume();
-           }
-         }
-       });
-       txtIns.addKeyListener(new KeyAdapter() {
-         public void keyTyped(KeyEvent e) {
-           char c = e.getKeyChar();
-           if (!(Character.isLetter(c) ||
-              (c == KeyEvent.VK_BACK_SPACE) ||
-              (c==KeyEvent.VK_SPACE) ||
-              (c == KeyEvent.VK_DELETE))) {
-             
-             getToolkit().beep();
-             JOptionPane.showMessageDialog(null,"This Field Only acept text","ERROR",
-             JOptionPane.DEFAULT_OPTION);
-             e.consume();
-           }
-         }
-       });
-       
-       
-       txtCapacity.addFocusListener(new FocusAdapter() {
-         public void focusLost(FocusEvent e) {
-           JTextField textField =
-             (JTextField)e.getSource();
-           String content = textField.getText();
-           if (content.length() != 0) {
-             try {
-               Integer.parseInt(content);
-             } catch (NumberFormatException nfe) {
-               getToolkit().beep();
-               JOptionPane.showMessageDialog(null,"Invalid data entry","ERROR",
-               JOptionPane.DEFAULT_OPTION);
-               textField.requestFocus();
-               txtCapacity.setText("");
-             }
-           }
-         }
-       });
-      
-       
-	try
-
-         {
-	
-                Statement s = Connect.getConnection().createStatement();
-      }
-
-     
-      catch ( Exception excp )
-
-      {
-            excp.printStackTrace();
-           
-      
 		
-	}    
-	      
-
-		AddNew.addActionListener(new ActionListener() 
-		{
-	 public void actionPerformed(ActionEvent e) {
-          
-      if (txtBusNo.getText() == null ||
-      txtBusNo.getText().equals("")){   
-      JOptionPane.showMessageDialog(null,"Enter bus number","ERROR"
-      ,JOptionPane.DEFAULT_OPTION);
-      txtBusNo.requestFocus();
-      return;
-      }
-      
-      if (txtRegNo.getText() == null ||
-      txtRegNo.getText().equals("")){   
-      JOptionPane.showMessageDialog(null,"Enter Reg Number","ERROR",
-      JOptionPane.DEFAULT_OPTION);
-      txtRegNo.requestFocus();
-      return;}
-      if (txtModel.getText() == null ||
-      txtModel.getText().equals("")){   
-      JOptionPane.showMessageDialog(null," Model Field is required","ERROR",
-      JOptionPane.DEFAULT_OPTION);
-      txtModel.requestFocus();
-      return;}
-      if (txtCapacity.getText() == null ||
-      txtCapacity.getText().equals("")){   
-      JOptionPane.showMessageDialog(null," Enter bus capacity","ERROR",
-      JOptionPane.DEFAULT_OPTION);
-      txtCapacity.requestFocus();
-      return;}
-    
-       int caps=Integer.parseInt(txtCapacity.getText());
-      if (caps!=45 && caps!=35){
-      	JOptionPane.showMessageDialog(null," Bus Capacity is invalid","ERROR",
-        JOptionPane.DEFAULT_OPTION);
-        txtCapacity.requestFocus();
-          return;}
-      
-      if (txtIns.getText() == null ||
-      txtIns.getText().equals("")){   
-      JOptionPane.showMessageDialog(null," Insurance status entry is required",
-      "ERROR",JOptionPane.DEFAULT_OPTION);
-      txtIns.requestFocus();
-      return;}
-      
-      
-      
-				try{
-			Statement statement =Connect.getConnection().createStatement();
-				{
-			String temp = "INSERT INTO Buses (BusNo, Bus_RegNo, Model, Capacity, DateBought,Insurance_Status,Date_Insured,Insurance_Expiry) VALUES ('"+
-                                                    
-                                              txtBusNo.getText() 	   + "', '" +  
-			   							   	  txtRegNo.getText()       + "', '" +  
-			   							   	  txtModel.getText()	   + "', '" +  
-			   							   	  txtCapacity.getText()	   + "', '" + 
-			   							   	  date_bought.getText()	   + "', '" +  
-			   							   	  txtIns.getText()         + "', '" +  
-			   							   	  date_ins.getText()       + "', '" +  
-			   							   	  
-			   							   	  date_expiry.getText() 	       + "')";
-			   							   	 
-				int result = statement.executeUpdate( temp );
-				String ObjButtons[] = {"Yes","No"};
-				 int PromptResult = JOptionPane.showOptionDialog(null,"Record succesfully added.Do you want to add another?",
-		             "tobiluoch",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
-		             if (PromptResult==0){
-		             	generator();
-		             
-		             	txtRegNo.setText("");
-		             	txtModel.setText("");
-		             	
-		             	txtCapacity.setText("");
-
-		             	txtIns.setText("");
-	             
-		             }
-		             else{
-		             	
-		             	setVisible(false);
-		               
-		             }
-					}
-					
+		txtModel.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!(Character.isLetter(c) || (c == KeyEvent.VK_BACK_SPACE) || (c==KeyEvent.VK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					JOptionPane.showMessageDialog(null,"This field only accept text",Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+					e.consume();
 				}
-				catch ( SQLException sqlex )
-
-                      {
-                         sqlex.printStackTrace();
-                         
-                      }
+			}
+		});
+       
+		txtIns.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!(Character.isLetter(c) || (c == KeyEvent.VK_BACK_SPACE) || (c==KeyEvent.VK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					JOptionPane.showMessageDialog(null,"This field only accept text",Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+					e.consume();
+				}
+			}
+		});
+       
+       
+		txtCapacity.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				JTextField textField =  (JTextField)e.getSource();
+				String content = textField.getText();
+				
+				if (content.length() != 0) {
+					try {
+						Integer.parseInt(content);
+					}catch (NumberFormatException nfe) {
+						getToolkit().beep();
+						JOptionPane.showMessageDialog(null,Constants.INVALID,Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+						textField.requestFocus();
+						txtCapacity.setText("");
 					}
-					});
+				}
+			}
+		});
+       
+		AddNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtBusNo.getText() == null || txtBusNo.getText().equals("")){   
+					JOptionPane.showMessageDialog(null,"Enter bus number",Constants.WARNING,JOptionPane.WARNING_MESSAGE);
+					txtBusNo.requestFocus();
+					return;
+				}
+      
+				if (txtRegNo.getText() == null || txtRegNo.getText().equals("")){   
+					JOptionPane.showMessageDialog(null,"Enter Reg Number",Constants.WARNING, JOptionPane.WARNING_MESSAGE);
+					txtRegNo.requestFocus();
+					return;
+				}
+				if (txtModel.getText() == null || txtModel.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,	"Model Field is required", Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+					txtModel.requestFocus();
+					return;
+				}
+				if (txtCapacity.getText() == null || txtCapacity.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Enter bus capacity", Constants.WARNING, JOptionPane.WARNING_MESSAGE);
+					txtCapacity.requestFocus();
+					return;
+				}
+
+				int caps = Integer.parseInt(txtCapacity.getText());
+				if (caps != 45 && caps != 35) {
+					JOptionPane.showMessageDialog(null, "Bus Capacity is invalid", Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+					txtCapacity.requestFocus();
+					return;
+				}
+
+				if (txtIns.getText() == null || txtIns.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insurance status entry is required", Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+					txtIns.requestFocus();
+					return;
+				}  
+      
+				try {
+					Statement statement = Connect.getConnection().createStatement();
+
+					String temp = "INSERT INTO Buses (BusNo, Bus_RegNo, Model, Capacity, DateBought,Insurance_Status,Date_Insured,Insurance_Expiry) VALUES ('"
+							+
+
+							txtBusNo.getText()
+							+ "', '"
+							+ txtRegNo.getText()
+							+ "', '"
+							+ txtModel.getText()
+							+ "', '"
+							+ txtCapacity.getText()
+							+ "', '"
+							+ date_bought.getText()
+							+ "', '"
+							+ txtIns.getText()
+							+ "', '"
+							+ date_ins.getText()
+							+ "', '"
+							+ date_expiry.getText() + "')";
+
+					statement.executeUpdate(temp);
+					String ObjButtons[] = { "Yes", "No" };
+					int PromptResult = JOptionPane.showOptionDialog(null,"Record succesfully added.Do you want to add another?", Constants.SUPER_TITLE, JOptionPane.DEFAULT_OPTION,
+									JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+					if (PromptResult == 0) {
+						generator();
+
+						txtRegNo.setText("");
+						txtModel.setText("");
+						txtCapacity.setText("");
+						txtIns.setText("");
+					}
+					else{
+						setVisible(false);
+					}
+				}catch (SQLException sqlex){
+					sqlex.printStackTrace();
+				}
+			}
+		});
 
 		Cancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-			setVisible(true);
+				setVisible(true);
 				dispose();
 				new DateButton().setVisible(true);
-				
 			}
 		});
 		
-		 Clear.addActionListener(new java.awt.event.ActionListener() {
+		Clear.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				txtBusNo.setText ("");
 				txtRegNo.setText ("");
 				txtModel.setText ("");
 				txtCapacity.setText ("");
-//				txtDP.setText ("");
 				txtIns.setText ("");
-//				txtDI.setText ("");
-//				txtDE.setText("");
-				
 			}
 		});
 
@@ -307,39 +249,30 @@ import com.bbss.login.LoginScreen;
 
 		pack();
 		setVisible(true);
+    }
     
-}
- private void generator()
-	{
-		try
-		{
+    private void generator(){
+    	try{
 		    ResultSet rst=Connect.getConnection().createStatement(
 			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
 			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select * from Buses where BusNo =(SELECT Max(Buses.BusNo) AS MaxOfBusNo FROM Buses)");
 			txtBusNo.setText("1000");
-			while(rst.next())
-			{
+			
+			while(rst.next()){
 				String s;
 				int number=rst.getInt(2);
 				number=number+1;
 				
 				s=""+number;
 				txtBusNo.setText(s);
-			    
 			}	
-		}
-		catch(Exception n)
-		{
+		}catch(Exception n){
 			n.printStackTrace();
 		}		
 	}
 
-   
-	public static void main(String args[]) {
-
+	/*public static void main(String args[]){
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		new LoginScreen().setVisible(true);
-	}
-    
-	
+	}*/
 }

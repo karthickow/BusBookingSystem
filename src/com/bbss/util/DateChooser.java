@@ -1,339 +1,317 @@
 package com.bbss.util;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
-public class DateChooser extends JDialog 
-    implements ItemListener, MouseListener, FocusListener, KeyListener, ActionListener
-{Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
-  
-    private static final String[] MONTHS = 
-	new String[] {
-	    "January",
-	    "February",
-	    "March",
-	    "April",
-	    "May",
-	    "June",
-	    "July",
-	    "August",
-	    "September",
-	    "October",
-	    "November",
-	    "December"
-	};
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-    private static final String[] DAYS =
-	new String[] {
-	    "Sun",
-	    "Mon",
-	    "Tue",
-	    "Wed",
-	    "Thu",
-	    "Fri",
-	    "Sat"
-	};
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 
-    
-    private static final Color WEEK_DAYS_FOREGROUND = Color.black;
+public class DateChooser extends JDialog implements ItemListener, MouseListener, FocusListener, KeyListener, ActionListener {
+	private static final long serialVersionUID = -4025328239845817988L;
 
-    
-    private static final Color DAYS_FOREGROUND = Color.blue;
+	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-   
-    private static final Color SELECTED_DAY_FOREGROUND = Color.white;
+	private static final String[] MONTHS = new String[] { "January",
+			"February", "March", "April", "May", "June", "July", "August",
+			"September", "October", "November", "December" };
 
-    
-    private static final Color SELECTED_DAY_BACKGROUND = Color.blue;
+	private static final String[] DAYS = new String[] { "Sun", "Mon", "Tue",
+			"Wed", "Thu", "Fri", "Sat" };
 
-    
-    private static final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(1,1,1,1);
+	private static final Color WEEK_DAYS_FOREGROUND = Color.black;
 
-    
-    private static final Border FOCUSED_BORDER = BorderFactory.createLineBorder(Color.yellow,1);
+	private static final Color DAYS_FOREGROUND = Color.blue;
 
-    
-    private static final int FIRST_YEAR = 2000;
+	private static final Color SELECTED_DAY_FOREGROUND = Color.white;
 
-    
-    private static final int LAST_YEAR = 2100;
+	private static final Color SELECTED_DAY_BACKGROUND = Color.blue;
 
-    
-    private GregorianCalendar calendar;
+	private static final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(
+			1, 1, 1, 1);
 
-    
-    private JLabel[][] days;
+	private static final Border FOCUSED_BORDER = BorderFactory
+			.createLineBorder(Color.yellow, 1);
 
-    
-    private FocusablePanel daysGrid;
+	private static final int FIRST_YEAR = 2000;
 
-    
-    private JComboBox month;
+	private static final int LAST_YEAR = 2100;
 
-    
-    private JComboBox year;
+	private GregorianCalendar calendar;
 
-    
-    private JButton ok;
+	private JLabel[][] days;
 
-    
-    private JButton cancel;
+	private FocusablePanel daysGrid;
 
-    
-    private int offset;
+	private JComboBox month;
 
-    
-    private int lastDay;
+	private JComboBox year;
 
-    
-    private JLabel day;
+	private JButton ok;
 
-    
-    private boolean okClicked;
-    private static class FocusablePanel extends JPanel
-    {
-	
-	public FocusablePanel( LayoutManager layout ) {
-	    super( layout );
-	
-	}
+	private JButton cancel;
 
+	private int offset;
 
-	
-	public boolean isFocusTraversable() {
-	    return true;
-	}
-    }
+	private int lastDay;
 
-    private void construct()
-    {
-	calendar = new GregorianCalendar();
+	private JLabel day;
 
-	month = new JComboBox(MONTHS);
-	month.addItemListener( this );
+	private boolean okClicked;
 
-	year = new JComboBox();
-	for ( int i=FIRST_YEAR; i<=LAST_YEAR; i++ )
-	    year.addItem( Integer.toString(i) );
-	year.addItemListener( this );
+	@SuppressWarnings("serial")
+	private static class FocusablePanel extends JPanel {
 
-	days = new JLabel[7][7];
-	for ( int i=0; i<7; i++ ) {
-	    days[0][i] = new JLabel(DAYS[i],JLabel.RIGHT);
-	    days[0][i].setForeground( WEEK_DAYS_FOREGROUND );
-	}
-	for ( int i=1; i<7; i++ )
-	    for ( int j=0; j<7; j++ )
-		{
-		    days[i][j] = new JLabel(" ",JLabel.RIGHT);
-		    days[i][j].setForeground( DAYS_FOREGROUND );
-		    days[i][j].setBackground( SELECTED_DAY_BACKGROUND );
-		    days[i][j].setBorder( EMPTY_BORDER );
-		    days[i][j].addMouseListener( this );
+		public FocusablePanel(LayoutManager layout) {
+			super(layout);
+
 		}
 
-	ok = new JButton("Ok");
-	ok.addActionListener( this );
-	cancel = new JButton("Cancel");
-	cancel.addActionListener( this );
-
-	JPanel monthYear = new JPanel();
-	monthYear.add( month );
-	monthYear.add( year );
-
-	daysGrid = new FocusablePanel(new GridLayout(7,7,5,0));
-	daysGrid.addFocusListener( this );
-	daysGrid.addKeyListener( this );
-	for ( int i=0; i<7; i++ )
-	    for ( int j=0; j<7; j++ )
-		daysGrid.add( days[i][j] );
-	daysGrid.setBackground( Color.white );
-	daysGrid.setBorder( BorderFactory.createLoweredBevelBorder() );
-	JPanel daysPanel = new JPanel();
-	daysPanel.add( daysGrid );
-
-	JPanel buttons = new JPanel();
-	buttons.add( ok );
-	buttons.add( cancel );
-
-	Container dialog = getContentPane();
-	dialog.add( "North", monthYear );
-	dialog.add( "Center", daysPanel );
-	dialog.add( "South", buttons );
-
-	pack();
-	setResizable( false );
-    }
-    private int getSelectedDay()
-    {
-	if ( day == null )
-	    return -1 ;
-	try {
-	    return Integer.parseInt(day.getText());
-	} catch ( NumberFormatException e ) {
+		public boolean isFocusTraversable() {
+			return true;
+		}
 	}
-	return -1;
-    }
 
-    private void setSelected( JLabel newDay )
-    {
-	if ( day != null ) {
-	    day.setForeground( DAYS_FOREGROUND );
-	    day.setOpaque( false );
-	    day.setBorder( EMPTY_BORDER );
+	private void construct() {
+		calendar = new GregorianCalendar();
+
+		month = new JComboBox(MONTHS);
+		month.addItemListener(this);
+
+		year = new JComboBox();
+		for (int i = FIRST_YEAR; i <= LAST_YEAR; i++)
+			year.addItem(Integer.toString(i));
+		year.addItemListener(this);
+
+		days = new JLabel[7][7];
+		for (int i = 0; i < 7; i++) {
+			days[0][i] = new JLabel(DAYS[i], JLabel.RIGHT);
+			days[0][i].setForeground(WEEK_DAYS_FOREGROUND);
+		}
+		for (int i = 1; i < 7; i++)
+			for (int j = 0; j < 7; j++) {
+				days[i][j] = new JLabel(" ", JLabel.RIGHT);
+				days[i][j].setForeground(DAYS_FOREGROUND);
+				days[i][j].setBackground(SELECTED_DAY_BACKGROUND);
+				days[i][j].setBorder(EMPTY_BORDER);
+				days[i][j].addMouseListener(this);
+			}
+
+		ok = new JButton("Ok");
+		ok.addActionListener(this);
+		cancel = new JButton("Cancel");
+		cancel.addActionListener(this);
+
+		JPanel monthYear = new JPanel();
+		monthYear.add(month);
+		monthYear.add(year);
+
+		daysGrid = new FocusablePanel(new GridLayout(7, 7, 5, 0));
+		daysGrid.addFocusListener(this);
+		daysGrid.addKeyListener(this);
+		for (int i = 0; i < 7; i++)
+			for (int j = 0; j < 7; j++)
+				daysGrid.add(days[i][j]);
+		daysGrid.setBackground(Color.white);
+		daysGrid.setBorder(BorderFactory.createLoweredBevelBorder());
+		JPanel daysPanel = new JPanel();
+		daysPanel.add(daysGrid);
+
+		JPanel buttons = new JPanel();
+		buttons.add(ok);
+		buttons.add(cancel);
+
+		Container dialog = getContentPane();
+		dialog.add("North", monthYear);
+		dialog.add("Center", daysPanel);
+		dialog.add("South", buttons);
+
+		pack();
+		setResizable(false);
 	}
-	day = newDay;
-	day.setForeground( SELECTED_DAY_FOREGROUND );
-	day.setOpaque( true );
-	if ( daysGrid.hasFocus() )
-	    day.setBorder( FOCUSED_BORDER );
-    }
 
-
-
-    
-    private void setSelected( int newDay )
-    {
-	setSelected( days[(newDay+offset-1)/7+1][(newDay+offset-1)%7] );
-    }
-
-    private void update()
-    {
-	int iday = getSelectedDay();
-	for ( int i=0; i<7; i++ ) {
-	    days[1][i].setText( " " );
-	    days[5][i].setText( " " );
-	    days[6][i].setText( " " );
+	private int getSelectedDay() {
+		if (day == null)
+			return -1;
+		try {
+			return Integer.parseInt(day.getText());
+		} catch (NumberFormatException e) {
+		}
+		return -1;
 	}
-	calendar.set( Calendar.DATE, 1 );
-	calendar.set( Calendar.MONTH, month.getSelectedIndex()+Calendar.JANUARY );
-	calendar.set( Calendar.YEAR, year.getSelectedIndex()+FIRST_YEAR );
 
-	offset = calendar.get(Calendar.DAY_OF_WEEK)-Calendar.SUNDAY;
-	lastDay = calendar.getActualMaximum(Calendar.DATE);
-	for ( int i=0; i<lastDay; i++ )
-	    days[(i+offset)/7+1][(i+offset)%7].setText( String.valueOf(i+1) );
-	if ( iday != -1 ) {
-	    if ( iday > lastDay )
-		iday = lastDay;
-	    setSelected( iday );
+	private void setSelected(JLabel newDay) {
+		if (day != null) {
+			day.setForeground(DAYS_FOREGROUND);
+			day.setOpaque(false);
+			day.setBorder(EMPTY_BORDER);
+		}
+		day = newDay;
+		day.setForeground(SELECTED_DAY_FOREGROUND);
+		day.setOpaque(true);
+		if (daysGrid.hasFocus())
+			day.setBorder(FOCUSED_BORDER);
 	}
-    }
 
-    public void actionPerformed( ActionEvent e ) {
-	if ( e.getSource() == ok )
-	    okClicked = true;
-	hide();
-    }
-
-    
-    public void focusGained( FocusEvent e ) {
-	setSelected( day );
-    }
-
-    
-    public void focusLost( FocusEvent e ) {
-	setSelected( day );
-    }
-
-    
-    public void itemStateChanged( ItemEvent e ) {
-	update();
-    }
-
-    
-    public void keyPressed( KeyEvent e ) {
-	int iday = getSelectedDay();
-	switch ( e.getKeyCode() ) {
-	case KeyEvent.VK_LEFT:
-	    if ( iday > 1 )
-		setSelected( iday-1 );
-	    break;
-	case KeyEvent.VK_RIGHT:
-	    if ( iday < lastDay )
-		setSelected( iday+1 );
-	    break;
-	case KeyEvent.VK_UP:
-	    if ( iday > 7 )
-		setSelected( iday-7 );
-	    break;
-	case KeyEvent.VK_DOWN:
-	    if ( iday <= lastDay-7 )
-		setSelected( iday+7 );
-	    break;
+	private void setSelected(int newDay) {
+		setSelected(days[(newDay + offset - 1) / 7 + 1][(newDay + offset - 1) % 7]);
 	}
-    }
 
-    
-    public void mouseClicked( MouseEvent e ) {
-	JLabel day = (JLabel)e.getSource();
-	if ( !day.getText().equals(" ") )
-	    setSelected( day );
-	daysGrid.requestFocus();
-    }
+	private void update() {
+		int iday = getSelectedDay();
+		for (int i = 0; i < 7; i++) {
+			days[1][i].setText(" ");
+			days[5][i].setText(" ");
+			days[6][i].setText(" ");
+		}
+		calendar.set(Calendar.DATE, 1);
+		calendar.set(Calendar.MONTH, month.getSelectedIndex()
+				+ Calendar.JANUARY);
+		calendar.set(Calendar.YEAR, year.getSelectedIndex() + FIRST_YEAR);
 
-    public void keyReleased( KeyEvent e ) {}
-    public void keyTyped( KeyEvent e ) {}
-    public void mouseEntered( MouseEvent e ) {}
-    public void mouseExited( MouseEvent e) {}
-    public void mousePressed( MouseEvent e ) {}
-    public void mouseReleased( MouseEvent e) {}
-    public DateChooser( Dialog owner, String title )
-    {
-	super( owner, title, true );
-	construct();
-    }
-    public DateChooser( Dialog owner )
-    {
-	super( owner, true );
-	construct();
-    }
+		offset = calendar.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY;
+		lastDay = calendar.getActualMaximum(Calendar.DATE);
+		for (int i = 0; i < lastDay; i++)
+			days[(i + offset) / 7 + 1][(i + offset) % 7].setText(String
+					.valueOf(i + 1));
+		if (iday != -1) {
+			if (iday > lastDay)
+				iday = lastDay;
+			setSelected(iday);
+		}
+	}
 
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == ok)
+			okClicked = true;
+		//hide();
+		setVisible(false);
+	}
 
-    public DateChooser( Frame owner, String title )
-    {
-	super( owner, title, true );
-	construct();
-    }
+	public void focusGained(FocusEvent e) {
+		setSelected(day);
+	}
 
+	public void focusLost(FocusEvent e) {
+		setSelected(day);
+	}
 
+	public void itemStateChanged(ItemEvent e) {
+		update();
+	}
 
-    
-    public DateChooser( Frame owner )
-    {
-	super( owner, true );
-	construct();
-	setLocation((screen.width - 800)/2,((screen.height-550)/2));
-    }
+	public void keyPressed(KeyEvent e) {
+		int iday = getSelectedDay();
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_LEFT:
+			if (iday > 1)
+				setSelected(iday - 1);
+			break;
+		case KeyEvent.VK_RIGHT:
+			if (iday < lastDay)
+				setSelected(iday + 1);
+			break;
+		case KeyEvent.VK_UP:
+			if (iday > 7)
+				setSelected(iday - 7);
+			break;
+		case KeyEvent.VK_DOWN:
+			if (iday <= lastDay - 7)
+				setSelected(iday + 7);
+			break;
+		}
+	}
 
+	public void mouseClicked(MouseEvent e) {
+		JLabel day = (JLabel) e.getSource();
+		if (!day.getText().equals(" "))
+			setSelected(day);
+		daysGrid.requestFocus();
+	}
 
+	public void keyReleased(KeyEvent e) {
+	}
 
-    public Date select( Date date )
-    {
-	calendar.setTime( date );
-	int _day = calendar.get(Calendar.DATE);
-	int _month = calendar.get(Calendar.MONTH);
-	int _year = calendar.get(Calendar.YEAR);
+	public void keyTyped(KeyEvent e) {
+	}
 
-	year.setSelectedIndex( _year-FIRST_YEAR );
-	month.setSelectedIndex( _month-Calendar.JANUARY );
-	setSelected( _day );
-	okClicked = false;
-	show();
-	if ( !okClicked )
-	    return null;
-	calendar.set( Calendar.DATE, getSelectedDay() );
-	calendar.set( Calendar.MONTH, month.getSelectedIndex()+Calendar.JANUARY );
-	calendar.set( Calendar.YEAR, year.getSelectedIndex()+FIRST_YEAR );
-	return calendar.getTime();
-    }
+	public void mouseEntered(MouseEvent e) {
+	}
 
-    public Date select()
-    {
-	return select(new Date());
-    }
+	public void mouseExited(MouseEvent e) {
+	}
+
+	public void mousePressed(MouseEvent e) {
+	}
+
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	public DateChooser(Dialog owner, String title) {
+		super(owner, title, true);
+		construct();
+	}
+
+	public DateChooser(Dialog owner) {
+		super(owner, true);
+		construct();
+	}
+
+	public DateChooser(Frame owner, String title) {
+		super(owner, title, true);
+		construct();
+	}
+
+	public DateChooser(Frame owner) {
+		super(owner, true);
+		construct();
+		setLocation((screen.width - 800) / 2, ((screen.height - 550) / 2));
+	}
+
+	public Date select(Date date) {
+		calendar.setTime(date);
+		int _day = calendar.get(Calendar.DATE);
+		int _month = calendar.get(Calendar.MONTH);
+		int _year = calendar.get(Calendar.YEAR);
+
+		year.setSelectedIndex(_year - FIRST_YEAR);
+		month.setSelectedIndex(_month - Calendar.JANUARY);
+		setSelected(_day);
+		okClicked = false;
+		setVisible(true);
+		if (!okClicked)
+			return null;
+		calendar.set(Calendar.DATE, getSelectedDay());
+		calendar.set(Calendar.MONTH, month.getSelectedIndex()
+				+ Calendar.JANUARY);
+		calendar.set(Calendar.YEAR, year.getSelectedIndex() + FIRST_YEAR);
+		return calendar.getTime();
+	}
+
+	public Date select() {
+		return select(new Date());
+	}
 }
-

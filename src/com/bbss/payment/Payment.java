@@ -20,13 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.bbss.button.DateButton;
+import com.bbss.constants.Constants;
 import com.bbss.db.connection.Connect;
 
 public class Payment extends JFrame{
+	private static final long serialVersionUID = -593274309200752855L;
+
 	private JLabel label1,label2,label3,label4,label5,label6,label7;
 	public JTextField text1,text4,text5,text6,text7;
 	public JComboBox combo1,combo2,combo3,combo4,combo5,combo6,combo7,combo8;
-	private JButton button1,button2,button3,button4,button5,button6;
+	private JButton button1,button2,button3,button4;
 	private JPanel panel1,pane,panel3;
 	Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
 	public DateButton p_date;
@@ -52,11 +55,11 @@ public class Payment extends JFrame{
 		combo4.addItem("Cash");
 		combo4.addItem("Bank");
 		combo8=new JComboBox();
-		button1=new JButton ("PAY",new ImageIcon("Icon/i16x16/contents.png"));
-		button2=new JButton ("PRINT RECEIPT",new ImageIcon("Icon/i16x16/prints.png"));
-		button3=new JButton ("CANCEL",new ImageIcon("Icon/i16x16/exit.png"));
-		button4=new JButton ("SEARCH",new ImageIcon("Icon/i16x16/search.png"));
-		button5=new JButton ("DELETE",new ImageIcon("Icon/i16x16/delete.png"));
+		button1=new JButton ("PAY",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/pay.png"));
+		button2=new JButton ("PRINT RECEIPT",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/prints.png"));
+		button3=new JButton ("CANCEL",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
+		button4=new JButton ("SEARCH",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/search.png"));
+		//button5=new JButton ("DELETE",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/delete.png"));
 		//combo3.addItem(new)
 		panel1=new JPanel (new GridLayout(7,2));
 		panel1.setPreferredSize(new Dimension(350,250));
@@ -117,18 +120,18 @@ public class Payment extends JFrame{
 		     
 			
            if (combo1.getSelectedItem()==null){
-           	JOptionPane.showMessageDialog(null,"All Passenger have paid","tobiluoch",
+           	JOptionPane.showMessageDialog(null,"All Passenger have paid",Constants.SUPER_TITLE,
             JOptionPane.DEFAULT_OPTION);
            return;}
            if (combo2.getSelectedItem()==null){
-           	JOptionPane.showMessageDialog(null,"All Passenger have paid","tobiluoch",
+           	JOptionPane.showMessageDialog(null,"All Passenger have paid",Constants.SUPER_TITLE,
             JOptionPane.DEFAULT_OPTION);
             return;}
            generator();
            
            if(combo8.getSelectedItem()==null){
-           	JOptionPane.showMessageDialog(null,"The Passenger has not been booked","ERROR",
-           	JOptionPane.DEFAULT_OPTION);
+           	JOptionPane.showMessageDialog(null,"The Passenger has not been booked",Constants.ERROR,
+           	JOptionPane.ERROR_MESSAGE);
            return;}
 			try{
 			Statement statement =Connect.getConnection().createStatement();
@@ -144,8 +147,8 @@ public class Payment extends JFrame{
 			   							   	  combo3.getSelectedItem() 	   + "')";
 			   							   	  combo1.removeItem(combo1.getSelectedItem());
 			   							   	  combo2.removeItem(combo2.getSelectedItem());	  	  						   	  
-				        int result = statement.executeUpdate( temp );
-                        JOptionPane.showMessageDialog(null,"Passenger Account updated","tobiluoch",
+				        statement.executeUpdate( temp );
+                        JOptionPane.showMessageDialog(null,"Passenger Account updated",Constants.SUPER_TITLE,
                         JOptionPane.DEFAULT_OPTION);
                         
 					}
@@ -161,11 +164,9 @@ public class Payment extends JFrame{
 				{
 					Statement statement =Connect.getConnection().createStatement();
 					{
-						
-	                
                     String temp = "UPDATE Passenger SET Pay_Status='Paid'" +
 					    "WHERE Pass_NO LIKE  '" + combo1.getSelectedItem() + "'";
-                    int result = statement.executeUpdate( temp );
+                    statement.executeUpdate( temp );
 				     
 					}
 				 
@@ -206,10 +207,10 @@ public class Payment extends JFrame{
 		
 	}
 	
-       public static void main(String []args){
+    /*   public static void main(String []args){
        JFrame.setDefaultLookAndFeelDecorated(true);
        	new Payment().setVisible(true);
-    }
+    }*/
     private void generator()
 	{
 		
@@ -227,8 +228,6 @@ public class Payment extends JFrame{
 				
 				s=""+number;
 				text1.setText(s);
-			    int x;
-			    
 			}	
 		}
 		catch(Exception n)
@@ -330,8 +329,8 @@ public class Payment extends JFrame{
 
                 else
                    {
-                         JOptionPane.showMessageDialog(null,"Record Not found","ERROR",
-                         JOptionPane.DEFAULT_OPTION);        
+                         JOptionPane.showMessageDialog(null,"Record Not found",Constants.ERROR,
+                         JOptionPane.ERROR_MESSAGE);        
                    }
                }
                 catch ( SQLException sqlex )

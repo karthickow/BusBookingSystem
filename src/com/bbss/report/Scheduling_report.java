@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,9 +25,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
+import com.bbss.constants.Constants;
 import com.bbss.db.connection.Connect;
 
 public class Scheduling_report extends JFrame  {
+	private static final long serialVersionUID = -6464473330403847964L;
 	public Container content;
 	public JPanel reportingPanel;
 	public JTabbedPane listsTabs;
@@ -37,26 +38,26 @@ public class Scheduling_report extends JFrame  {
 	public JPanel statusPanel;
 	public JComboBox graphTypesCombo;
 	public Color skyblue=new Color(150,190,255);
-	public 	final ImageIcon imageIcon = new ImageIcon("Icon/header/cool.png");
-	private static Connection dbcon = null;
+	public 	final ImageIcon imageIcon = new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/cool.png");
 	Dimension screen 	= 	Toolkit.getDefaultToolkit().getScreenSize();
-    Statement stmt = null;
+	Statement stmt = null;
 	private JButton print,cancel;
 	private JPanel panel;	
+
+	@SuppressWarnings("serial")
 	public Scheduling_report()
 	{ 
-		
 		super("Buses Report");
-		
+
 		content=getContentPane();
 		content.setBackground(skyblue);
 		listsTabs=new JTabbedPane();
-		print=new JButton("PRINT ",new ImageIcon("Icon/i16x16/prints.png"));
-		cancel=new JButton("CANCEL",new ImageIcon("Icon/i16x16/exit.png"));
+		print=new JButton("PRINT ",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/prints.png"));
+		cancel=new JButton("CANCEL",new ImageIcon(Constants.USER_DIR+"/src/com/bbss/images/exit.png"));
 		panel=new JPanel();
 		panel.add(print);
 		panel.add(cancel);
-		
+
 		reportingPanel=new JPanel();
 		reportingPanel.setLayout(new BorderLayout());
 		reportingPanel.setBorder(BorderFactory.createEtchedBorder());
@@ -66,117 +67,92 @@ public class Scheduling_report extends JFrame  {
 		reportPanel.setLayout(new GridLayout(1,1));
 		reportPanel.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.blue));
 		reportPanel.setBackground(Color.white);
-		
+
 		reportingPanel.add(new JScrollPane(reportPanel),BorderLayout.CENTER);
 		listsTabs.add(reportingPanel);
-	    setLocation((screen.width-1270)/2,((screen.height-740)/2));
+		setLocation((screen.width-1270)/2,((screen.height-740)/2));
 		setResizable(false);
-	    listPane = new JTextArea() {
-      Image image = imageIcon.getImage();
+		listPane = new JTextArea() {
+			Image image = imageIcon.getImage();
+			{
+				setOpaque(false);
+			} 
 
-      
-      {
-        setOpaque(false);
-      } 
+			public void paint(Graphics g) {
+				g.drawImage(image, 340, 30, this);
+				g.setColor(Color.blue);
 
-      public void paint(Graphics g) {
-        g.drawImage(image, 340, 30, this);
-        g.setColor(Color.blue);
-        
-        g.drawString("Phone: +254 720576879: Cellphone: 0720576879",385,70);
-        g.drawString("Fax: +254 720576879 ",385,90);
-        g.drawString("Address: Box 6046-20100, Nakuru, Kenya ",385,110);
-        g.drawString("Email:rvs@gmail.com",385,140);
-        g.drawString("Website:www.rvs.co.ke",385,170);
-        g.setColor(Color.black);
-        super.paint(g);
-      }
-    };
-    
-    
+				g.drawString("Phone: 24540000: Cellphone: 9994265605",385,70);
+				g.drawString("Fax: +254 720576879 ",385,90);
+				g.drawString("Address: Box 600041, Chennai, Tamilnadu ",385,110);
+				g.drawString("Email:kaviyak@gmail.com",385,140);
+				g.drawString("Website:www.busbook.com",385,170);
+				g.setColor(Color.black);
+				super.paint(g);
+			}
+		};
+
+
 		listPane.setEditable(false);
 		listPane.setFont(new Font("Serif", Font.BOLD, 12));
 		listPane.setForeground(Color.black);
-	
+
 		listPane.setLineWrap(true);
 		listPane.setWrapStyleWord(true);
 		reportPanel.add(listPane);
-		 
-         	try
 
-                {
-                Statement s = Connect.getConnection().createStatement();
-                }
+		printList();
 
-     
-      catch ( Exception excp )
+		content.add(listsTabs,BorderLayout.CENTER);
 
-         {
-            excp.printStackTrace();
-         }    
-         printList();
-         
-
-
-      	content.add(listsTabs,BorderLayout.CENTER);
-      	
-      cancel.addActionListener(new java.awt.event.ActionListener() {
-	  public void actionPerformed(java.awt.event.ActionEvent e) {
+		cancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
 				dispose();
-				
+
 			}
 		});
-		
-      	setSize(1000,720);
-      	setVisible(true);
-	
+
+		setSize(1000,720);
+		setVisible(true);
+
 	}
 
 	private void printList() 
 	{
-    	try {
-                
-            ResultSet rst=Connect.getConnection().createStatement(
-			/*ResultSet.TYPE_SCROLL_INSENSITIVE,
+		try {
+
+			ResultSet rst=Connect.getConnection().createStatement(
+					/*ResultSet.TYPE_SCROLL_INSENSITIVE,
 			ResultSet.CONCUR_UPDATABLE*/).executeQuery("select Bus_No,Route_No,empNo,Trip_No,Date_Scheduled from Schedules");
-                
-			
-				listPane.append("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-				listPane.append("Bus_No"+"\t\t"+"Route_No"+"\t\t"+"Employee_No"+"\t\t"+"Trip_No\t\t"+"Date_Scheduled\n");
-				while (rst.next())
-                {
-                	listPane.append("       ");
-                	listPane.append(rst.getString(1).trim());
-                	listPane.append("\t\t");
-                	listPane.append(rst.getString(2).trim());
-                	listPane.append("\t\t");
-                	listPane.append(rst.getString(3).trim());
-                	listPane.append("\t\t");
-                	listPane.append(rst.getString(4).trim());
-                	listPane.append("\t\t");
-                	listPane.append(rst.getString(5).trim());
-                	
-				    listPane.append("\n\n");
-				 }
-				
-
-                 if (rst != null)
-                  rst.close();
-                 
-               } catch (SQLException sqle) {
-                     JOptionPane.showMessageDialog(null, " No Records found"
-                                       + sqle.getMessage());
-                    return;
-               }
-       }
-		
-	
 
 
-	
-	public static void main(String[] args)
-	{
-		new Scheduling_report();
-		
+			listPane.append("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+			listPane.append("Bus_No"+"\t\t"+"Route_No"+"\t\t"+"Employee_No"+"\t\t"+"Trip_No\t\t"+"Date_Scheduled\n");
+			while (rst.next())
+			{
+				listPane.append("       ");
+				listPane.append(rst.getString(1).trim());
+				listPane.append("\t\t");
+				listPane.append(rst.getString(2).trim());
+				listPane.append("\t\t");
+				listPane.append(rst.getString(3).trim());
+				listPane.append("\t\t");
+				listPane.append(rst.getString(4).trim());
+				listPane.append("\t\t");
+				listPane.append(rst.getString(5).trim());
+
+				listPane.append("\n\n");
+			}
+
+
+			if (rst != null)
+				rst.close();
+
+		} catch (SQLException sqle) {
+			JOptionPane.showMessageDialog(null, " No Records found"
+					+ sqle.getMessage());
+			return;
+		}
 	}
+
 }
