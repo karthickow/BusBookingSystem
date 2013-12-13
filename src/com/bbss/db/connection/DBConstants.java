@@ -4,7 +4,7 @@ package com.bbss.db.connection;
 public interface DBConstants {
 	// MS SQL SERVER 2008
 	String DB_DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";	
-	String DB_URL = "jdbc:sqlserver://192.168.5.3:1433;databaseName=BusBookingSystem";
+	String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=BusBookingSystem";
 	String DB_USERNAME = "sa";
 	String DB_PASSSWORD = "password-1"; 
 	

@@ -281,7 +281,7 @@ public class MainMenu extends JFrame implements WindowListener {
 		MnuReport.setMnemonic(KeyEvent.VK_R);
 		MnuReport.setBackground(new Color(255,255,255));
 		
-		NewJMenuBar.add(MnuReport);	
+		//NewJMenuBar.add(MnuReport);	
 		
 		Busrpt = new JMenuItem("Bus Report");
 		Busrpt.setForeground(Color.blue);
